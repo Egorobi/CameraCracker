@@ -13,10 +13,10 @@ The interface name can be found using the ```ifconfig``` command.
 
 In the attack.py file, enter the IP and MAC addresses of the camera and router you are attacking:
 ```
-ipCamera = "192.168.1.95"
-macCamera = "38:be:ab:8f:ff:b0"
-ipRouter = "192.168.1.1"
-macRouter = "04:92:26:60:98:38"
+ipCamera = "CAMERA-IP"
+macCamera = "CAMERA-MAC"
+ipRouter = "ROUTER-IP"
+macRouter = "ROUTER-MAC"
 ```
 
 Once this is set up, you can start the attack with:
